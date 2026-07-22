@@ -2,27 +2,20 @@
 phase3_hardware.py
 ==================
 Phase 3: run the radiality-coupled reconfiguration QUBO on REAL IBM Quantum
-hardware, and -- crucially -- MEASURE the noise degradation by running the same
+hardware, and MEASURE the noise degradation by running the same
 circuit twice: once UNMITIGATED and once with error mitigation (readout twirling
-TREX + dynamical decoupling).  This is the "honest degradation" result the review
-asks for; the earlier code merely enabled mitigation without ever comparing.
+TREX + dynamical decoupling).
 
-Fixes applied vs. the earlier Phase 3:
   * No separately-rebuilt ansatz with possibly-mismatched parameters: we bind the
     trained parameters to the SAME QAOA ansatz object, then transpile that.
   * One hardware job per configuration (not one per ADMM iteration).
   * Explicit mitigated-vs-unmitigated comparison + approximation ratio vs exact.
 
-CREDENTIAL NOTE (per user request the token stays hard-coded):
-  The token is kept as a module constant to preserve the hard-coded pattern, but
-  the actual leaked value has been replaced with a placeholder -- paste the
-  (rotated!) token below.  A hard-coded token in a shared file is a security risk;
-  rotate it and move to `QiskitRuntimeService.save_account(...)` before publishing.
 """
 from __future__ import annotations
 import numpy as np
 
-IBM_TOKEN = "PASTE_YOUR_ROTATED_IBM_TOKEN_HERE"   # <-- hard-coded per request
+IBM_TOKEN = "" 
 IBM_CHANNEL = "ibm_quantum_platform"
 
 from network_data import scaled_network

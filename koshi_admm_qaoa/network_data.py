@@ -1,6 +1,6 @@
 """
 network_data.py
-================
+
 Real, meshed Eastern-Nepal transmission sub-system used for the ADMM-QAOA
 post-contingency transmission-switching / reconfiguration study.
 
@@ -11,24 +11,8 @@ PROVENANCE (every element is traceable to a public source):
   [DERIV] Impedances derived from published line length x conductor per-km R/X,
           converted to per-unit on a 100 MVA common base (see derive_pu()).
 
-WHY THIS NETWORK (vs. the earlier 5-bus toy):
-  * The earlier code contained a FABRICATED 220 kV Dhungesanghu/Amarpur->Inaruwa
-    line (branch 4) that does not exist. It has been removed.
-  * Real switchable redundancy now comes from REAL structure:
-      - the Koshi Corridor is a DOUBLE-CIRCUIT 220 kV line (KC1 + KC4 second
-        circuits) -> each circuit is an independently switchable parallel path
-        [D2082, KC1/KC4].
-      - the 132 kV Amarpur-Dhungesanghu tie links the Kabeli & Koshi corridors
-        (19.13 km, double circuit) [D2082, project 8] -> a real loop.
-      - the Kushaha-Inaruwa-Duhabi 132 kV lines form a real loop [D2082, Pkg C].
-      - the 400/220 Inaruwa hub is the strong grid tie (3x315 MVA to the
-        Hetauda-Dhalkebar-Inaruwa 400 kV backbone) [D2082] -> used as SLACK
-        (this fixes the earlier backwards slack/load orientation).
-  * Generation injections are REAL: Sanima Middle Tamor 73 MW evacuated at
-    Dhungesanghu 220 kV [D2082, KC3 "evacuating 73 MW from Sanima Middle Tamor
-    HEP at 220 kV"]; Kabeli-corridor IPP aggregate at Amarpur.
 
-MODELLING NOTES / HONEST CAVEATS:
+NOTES
   * Per-unit branch-flow (DistFlow) model on a common 100 MVA base; transformers
     are represented as series pu reactances (off-nominal taps ignored).
   * Nodal MW/MVAr loads are ENGINEERING ESTIMATES for the eastern region (the

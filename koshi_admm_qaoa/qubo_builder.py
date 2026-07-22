@@ -3,16 +3,7 @@ qubo_builder.py
 ===============
 Builds the *radiality-coupled* QUBO for the switch sub-problem.
 
-WHY THIS IS THE KEY FIX
------------------------
-The original implementation used a SEPARABLE objective
-    sum_k (rho/2)(alpha_k - z_k + u_k)^2
-which has NO z_i z_j cross-terms -> it decouples into independent single-qubit
-problems whose optimum is just z_k = round(alpha_k+u_k).  On such a QUBO, QAOA
-does nothing that a one-line rounding could not do.
-
-Here the QUBO additionally encodes RADIALITY / CONNECTIVITY, which is what makes
-network reconfiguration a genuine combinatorial problem:
+Here the QUBO additionally encodes RADIALITY / CONNECTIVITY
   * spanning-tree CARDINALITY:  lambda_card ( sum_k z_k - K_target )^2
         -> couples EVERY pair of switch variables (off-diagonal 2*lambda terms).
   * fundamental-CYCLE penalties: for every independent loop C,

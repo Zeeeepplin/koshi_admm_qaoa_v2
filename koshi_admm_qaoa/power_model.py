@@ -16,7 +16,7 @@ Two entry points:
 Both minimise real-power losses + a large load-shedding penalty subject to the
 SOC branch-flow constraints; open branches carry no flow (Big-M).
 
-Relaxation honesty: the SOC branch-flow relaxation is provably exact only for
+the SOC branch-flow relaxation is provably exact only for
 radial operation. We therefore (a) allow meshed intermediate iterates inside
 ADMM, and (b) validate the FINAL configuration with is_radial()/is_connected()
 and a fixed-z AC solve.  CLARABEL is used (open-source conic solver).

@@ -1,6 +1,6 @@
 """
 run_all.py — orchestrate the whole study end to end.
-Skips the real hardware run (use phase3_hardware.py directly for that).
+Skips the real hardware run.
 """
 import warnings; warnings.filterwarnings("ignore")
 
@@ -13,7 +13,7 @@ def main():
     from qubo_builder import build_reconfig_qubo
     _, meta = build_reconfig_qubo(net)
     print(f"[2/6] Coupled QUBO: {meta['n_qubits']} qubits, "
-          f"{meta['n_offdiag']} coupling terms (original toy had 0)")
+          f"{meta['n_offdiag']} coupling terms")
 
     import power_model as pm
     r = pm.ac_feasibility(net, {k: 1 for k in net.switch_indices()})

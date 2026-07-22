@@ -1,5 +1,5 @@
 """Produce the ADMM convergence comparison figure: EXACT z-update (converges)
-vs QAOA z-update (oscillates -- honest NISQ limitation)."""
+vs QAOA z-update."""
 import warnings; warnings.filterwarnings("ignore")
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
