@@ -39,8 +39,7 @@ python phase3_hardware.py         # real IBM run (needs a token + queue)
 
 ## Notes
 
-- Nodal MW/MVAr loads are **engineering estimates** (the Year Book is a project
-  report, not a load-flow dataset); replace with SCADA/load-flow before publishing.
+- Nodal MW/MVAr loads are **engineering estimates**
 - The branch-flow SOC relaxation is exact only for radial operation; meshed
   intermediate iterates are relaxations and the **final** topology is AC-revalidated.
 - Radiality in the QUBO is a **soft** penalty; a connectivity-repair step guarantees
