@@ -7,7 +7,7 @@ for post-contingency reconfiguration/switching on a **real, meshed** Eastern-Nep
 
 ## Files
 
-- `network_data.py`   — meshed Eastern-Nepal dataset (provenance-documented; impedances derived from line length × conductor per-km, per-unit on 100 MVA).
+- `network_data.py`   — meshed Eastern-Nepal dataset (impedances derived from line length × conductor per-km, per-unit on 100 MVA).
 - `power_model.py`    — AC branch-flow **SOCP** (fixed-z and ADMM x-update), radiality/connectivity utilities, **connectivity repair**, AC-feasibility validation.
 - `qubo_builder.py`   — **radiality-coupled QUBO**; cardinality + cycle + anti-islanding coupling.
 - `solvers.py`        — exact, **QAOA** (noiseless/noisy, p-sweep), **QRAO**, **SA**, and a **true-SOCP-loss** ground truth.
