@@ -1,0 +1,9 @@
+cvxpy>=1.4.0
+networkx>=3.0
+numpy>=1.24
+matplotlib>=3.7
+qiskit>=1.0
+qiskit-algorithms>=0.2
+qiskit-optimization>=0.6
+qiskit-aer>=0.13
+qiskit-ibm-runtime>=0.19

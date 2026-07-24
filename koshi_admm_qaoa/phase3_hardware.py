@@ -14,8 +14,11 @@ TREX + dynamical decoupling).
 """
 from __future__ import annotations
 import numpy as np
+import os
+import sys
 
-IBM_TOKEN = "" 
+# IBM Quantum token should be provided via environment variable for security
+IBM_TOKEN = os.environ.get("IBM_QUANTUM_TOKEN", "")
 IBM_CHANNEL = "ibm_quantum_platform"
 
 from network_data import scaled_network
@@ -33,6 +36,13 @@ def _bitstring_to_z(bs, n):
 
 
 def run_phase3(n_switches=6, reps=1, shots=4096, min_qubits=127):
+    # Validate IBM token before proceeding (unless running self-test)
+    if not IBM_TOKEN and "--selftest" not in sys.argv:
+        raise RuntimeError(
+            "IBM Quantum token not found. Set IBM_QUANTUM_TOKEN environment variable "
+            "or run with --selftest flag for local validation."
+        )
+    
     # ---- problem + exact reference ----
     net = scaled_network(n_switches)
     qp, meta = build_reconfig_qubo(net)
