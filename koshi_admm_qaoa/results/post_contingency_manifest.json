@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "protocol_sha256": "006f19c8d5d8ab6a9446f7dabf9c9e2dbdc47d2d2fe3d9f1a6ffa5516e12f5b3",
+  "sources": {
+    "results/post_contingency_v1.json": "f7be4479b446dbdd63fcb7a6b391c5f9c2c5e33deb36b6df8e1e39cf6dc0fdae",
+    "results/post_contingency_sensitivity_v1.json": "0b940fdac1e5279896a4761ab718fd43a5ae71b94d0fce03783e73bc64ea1fd7",
+    "results/admm_post_contingency_v1.json": "7f7888b82474ff5c73add0a4af890a9335d793626970135055da4936fff9c130"
+  },
+  "outputs": {
+    "generated/post_contingency_results_table.tex": "62da17991c0960abee6b538cf9fe429913ebc002c552b1b8e3b997fe87f4d38b",
+    "generated/post_contingency_admm_table.tex": "d550981c03db63000fe177916f625de703b1776755afa3a2b96ce76f5c8b5077",
+    "generated/post_contingency_validation_table.tex": "189d804f62d7a72106d6f0ace44094c7e00a717f2e5d1ee4b3889027ae5d2e5d",
+    "generated/post_contingency_sensitivity_table.tex": "80c53f2097b054cfb44084cc3a6ab606e396ee69f33e5115df5818f68adce75e",
+    "generated/post_contingency_numbers.tex": "bb4ad3d1e1cc4abb3b57fa58383b7def951fc44209b753ae6b6b5b4c94ae7acb",
+    "figures/post_contingency_objective_gaps.png": "3cb5b79321da841a6826d8eca3041c85941b3a5e0d38b1000f587b14abd592f2"
+  },
+  "sensitivity_variants": 11
+}

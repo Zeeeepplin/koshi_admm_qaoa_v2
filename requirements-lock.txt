@@ -1,0 +1,15 @@
+# Reproducible software environment for the manuscript and artifact pipelines.
+# Python 3.12 is the tested interpreter.
+clarabel==0.9.0
+cvxpy==1.5.3
+matplotlib==3.9.2
+networkx==3.3
+numpy==1.26.4
+pytest==8.3.3
+qiskit==1.2.4
+qiskit-aer==0.15.1
+qiskit-algorithms==0.3.0
+qiskit-ibm-runtime==0.30.0
+qiskit-optimization==0.6.1
+scipy==1.14.1
+

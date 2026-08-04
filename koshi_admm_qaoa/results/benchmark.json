@@ -1,0 +1,2649 @@
+{
+  "schema_version": 2,
+  "artifact_id": "koshi-benchmark-v2",
+  "status": "frozen migration of legacy aggregate results",
+  "generated_at_utc": "2026-07-25T21:11:29.247856+00:00",
+  "provenance": {
+    "source_commit_at_migration": "9f4ff30b83ffd8a934198c019f89d8d012ecc474",
+    "working_tree_dirty_at_migration": false,
+    "legacy_input": "results/benchmark_legacy.json",
+    "legacy_input_sha256": "0baea60e6d94446188ebae853e3cbd2c3631a11661379b7c79ab316e66ea69ed",
+    "migration_script": "artifact_pipeline.py",
+    "audited_code_sha256": {
+      "network_data.py": "c25e8c5ed7678c7c25ace557a11cc43c297fd1c76e31d67871987d66ec5a5f44",
+      "qubo_builder.py": "a92555756774f2e9875c40179ce56d16a9add62a326d7018e8c22422dac085eb",
+      "power_model.py": "f776cc781cb4491e90e825da5e366484d16f75bea7603292ee11d776b5751d3b",
+      "ac_validation.py": "d87b316031d8bb414d752777a514c520cb8daa7e1d748c20c89a27b429688960",
+      "radiality.py": "73ecc451eec97a6368430031816d4b38506161d722155b46269b2ef91924e226",
+      "solvers.py": "3a2b525f38415e0211f41c658cc91d44c861f32763654e6b60eff6066a76256e",
+      "benchmark.py": "49369eaf768c19ddcacb56babfe5b9439266da20fa6bbcd3f4b4205e61c54f8c",
+      "artifact_pipeline.py": "a5e966d392913fceffab1037cec20796d2c4bea2ff151975ac251e286e278d14",
+      "hardware_evidence.py": "f7ac7687b29f80e17f236afca8f9977b2374e340b5dad04d4e00f922aabc630b",
+      "phase3_hardware.py": "f1b7d9eae8ee0fe107def1cb4dc8a7aba997d74c2a537ad8b4c4f4b4c7e33f63",
+      "study_protocol.py": "6511f2e15efb033d26a0d4700c6fcdc06a9a98397cd8343c34826a44eaeba636",
+      "statistics_report.py": "37084dcfbca08d0d1cddde80b08112eebc77cf7d6a2b3e0526e31aaa60419346",
+      "run_post_contingency_sensitivity.py": "d94ad395d866e5dd02c6a408db8c5afa71add68e2d538306f01d316794f7ed8a",
+      "make_post_contingency_admm.py": "0a5b3372d361e33a6965c342984f2f83900e249440b4588bdeab0e460517b309",
+      "post_contingency_pipeline.py": "16736f93730566fe2b8359772551f03d652063b9ac3bca32b42e0724ade4cbc3",
+      "environment_report.py": "c5db42a0cebdef51e3b18404344b38d62fd555140fbcd820e019da5ef1185758",
+      "../requirements-lock.txt": "4dbf911f3a51434f0154a9f2085bbd781002963a8e2394144184e1e4214dbae9"
+    },
+    "important_limitation": "The legacy file stored aggregate solver metrics and only one representative physics score. It did not store per-seed bitstrings."
+  },
+  "benchmark_configuration": {
+    "sizes": [
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "qaoa_and_sa_seeds": [
+      42,
+      7,
+      123
+    ],
+    "qaoa_depths": [
+      1,
+      2
+    ],
+    "shots": 1024,
+    "optimizer_max_iterations": 50,
+    "legacy_source": "benchmark.py defaults",
+    "contingency": null,
+    "interpretation": "legacy base case; not post-contingency"
+  },
+  "study_protocol": {
+    "file": "results/study_protocol.json",
+    "protocol_revision": "post-contingency-protocol-v2",
+    "protocol_sha256": "006f19c8d5d8ab6a9446f7dabf9c9e2dbdc47d2d2fe3d9f1a6ffa5516e12f5b3",
+    "prospective_results_status": "not generated"
+  },
+  "notation_contract": {
+    "physical_bus_indices": "i,j",
+    "physical_branch_index": "k",
+    "binary_vector_positions": "ell,m",
+    "variable_order_map": "pi(ell) = physical branch index",
+    "continuous_admm_copy": "alpha",
+    "binary_admm_qubo_copy": "z",
+    "returned_or_measured_bitstring": "b",
+    "qubo_objective": "f_Q",
+    "qubo_global_minimum": "f_Q_star",
+    "qubo_minimizer_set": "Z_Q_star",
+    "optimizer_run_hit_fraction": "h_run_star",
+    "shot_level_exact_set_probability": "p_shot_star",
+    "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+    "qaoa_objective_sense": "minimize Hamiltonian expectation"
+  },
+  "continuous_model_evidence": {
+    "current_code_revision": "continuous-model-v2",
+    "numeric_results_model_revision": "legacy-continuous-model-v1",
+    "status": "stale: continuous-model-v2 changes shedding, thermal limits, transformer taps, slack balance, and AC validation; all SOC numbers require regeneration"
+  },
+  "radiality_model_evidence": {
+    "current_code_revision": "exact-radiality-v1",
+    "historical_qubo_revision": "heuristic-topology-qubo-v1",
+    "status": "current exact topology audit; historical quantum results retain the heuristic QUBO and are not hard-radiality results"
+  },
+  "hardware_model_evidence": {
+    "current_code_revision": "hardware-evidence-v2",
+    "numeric_result_status": "not generated",
+    "required_output": "results/hardware_YYYYMMDDTHHMMSSZ/hardware_results.json",
+    "manuscript_table_output": "generated/hardware_evidence_tables.tex",
+    "admission_rule": "hardware_evidence.validate_evidence_package must pass before any hardware number is inserted into the manuscript"
+  },
+  "instances": [
+    {
+      "n": 4,
+      "qubo": {
+        "n_binary_variables": 4,
+        "standard_qaoa_qubits": 4,
+        "n_qubits": 4,
+        "objective_convention": {
+          "physical_branch_index": "k",
+          "binary_vector_position": "ell",
+          "binary_variable": "z_ell",
+          "variable_order": "variable_order_branch_indices",
+          "objective_symbol": "f_Q",
+          "objective_sense": "minimize",
+          "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+          "returned_array_order": "QuadraticProgram variable order"
+        },
+        "target_closed_switches": 1,
+        "constant": 0.0,
+        "variable_order_branch_indices": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "linear_coefficients": [
+          1.9999995859906257,
+          -2.268640463542311,
+          -2.268640463542311,
+          -2.2301478563603276
+        ],
+        "upper_triangular_quadratic_coefficients": [
+          [
+            0.0,
+            7.5,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            7.5,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "offdiagonal_union_nonzero": 6,
+        "components": {
+          "consensus": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "loss": {
+            "linear": {
+              "nonzero": 4,
+              "coefficient_min": 0.7313595364576888,
+              "coefficient_max": 4.999999585990626
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "cardinality": {
+            "linear": {
+              "nonzero": 4,
+              "coefficient_min": -3.0,
+              "coefficient_max": -3.0
+            },
+            "quadratic": {
+              "nonzero": 6,
+              "coefficient_min": 6.0,
+              "coefficient_max": 6.0
+            }
+          },
+          "cycle": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 2,
+              "coefficient_min": 1.5,
+              "coefficient_max": 1.5
+            }
+          },
+          "anti_islanding": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          }
+        },
+        "topology_encoding": {
+          "revision": "heuristic-topology-qubo-v1",
+          "hard_connectivity_enforced": false,
+          "hard_radiality_enforced": false,
+          "cardinality_target_definition": "n_bus - 1 - rank(fixed subgraph)",
+          "cardinality_target_is_tree_valid": false,
+          "fixed_subgraph": {
+            "fixed_closed_count": 17,
+            "fixed_component_count": 2,
+            "fixed_cycle_rank": 3,
+            "fixed_is_forest": false,
+            "available_graph_connected": true
+          },
+          "exact_formulation": "radiality.solve_spanning_tree_milp",
+          "faulted_branches_excluded_from_decision_vector": []
+        },
+        "counting_note": "Component counts overlap: a pair can receive coefficients from more than one penalty. The union count is the nonzero count after summation."
+      },
+      "radiality_audit": {
+        "revision": "exact-radiality-v1",
+        "fixed_subgraph": {
+          "fixed_branch_indices": [
+            0,
+            1,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "fixed_closed_count": 17,
+          "fixed_component_count": 2,
+          "fixed_cycle_rank": 3,
+          "fixed_is_forest": false,
+          "target_closed_switches": -2
+        },
+        "hard_spanning_tree": {
+          "feasible": false,
+          "status": "infeasible: mandatory fixed branches contain a cycle",
+          "time_s": 0.0006523000010929536,
+          "target_closed_switches": null,
+          "linear_impedance_proxy_objective": null,
+          "returned_bits": null
+        },
+        "actual_historical_qubo": {
+          "uniform_cardinality_plus_linear": false,
+          "unique_offdiagonal_coefficients": [
+            6.0,
+            7.5
+          ],
+          "exact_objective_recomputed_by_enumeration": -2.268640463542311,
+          "exact_enumeration_time_s": 0.00013069999840809032,
+          "one_current_enumerated_minimizer_variable_order": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "all_current_enumerated_minimizers_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ]
+          ],
+          "topology_revision": "exact-radiality-v1",
+          "total_configurations": 16,
+          "target_cardinality_configurations": 4,
+          "radial_configurations": 0,
+          "cycle_surrogate_false_positive_radial_states": 0,
+          "cycle_surrogate_false_negative_nonradial_target_cardinality_states": 4,
+          "global_qubo_minimum": -2.268640463542311,
+          "global_qubo_minimizers": 2,
+          "global_qubo_minimizers_that_are_radial": 0,
+          "best_radial_qubo_objective": null,
+          "hard_radiality_objective_gap": null
+        },
+        "cardinality_only_baseline": {
+          "solver": "uniform-cardinality sorting/prefix",
+          "objective": -2.268640463542311,
+          "time_s": 0.0002004000016313512,
+          "hamming_weight": 1,
+          "exact_enumeration_objective": -2.268640463542311,
+          "agrees_with_enumeration": true,
+          "scope": "exact only for the linear plus uniform-all-pairs cardinality variant with cycle and anti-islanding coefficients set to zero"
+        }
+      },
+      "exact_qubo": {
+        "objective": -2.268640463542311,
+        "objective_symbol": "f_Q_star",
+        "time_s": 0.044309139251708984,
+        "one_minimizer_bits_variable_order": null,
+        "returned_bits": null,
+        "retained_solver_bitstring_status": "not archived in the legacy aggregate artifact",
+        "current_enumeration": {
+          "scope": "reconstructed from the fully archived current QUBO coefficients; not the historical solver-returned bitstring",
+          "one_minimizer_bits_variable_order": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "all_minimizers_bits_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0
+            ]
+          ]
+        },
+        "fixed_topology_soc": {
+          "model_revision": "legacy-continuous-model-v1",
+          "current_model_claim_eligible": false,
+          "loss_mw": 5.833615045209974,
+          "connected": true,
+          "radial": null,
+          "feasible": true,
+          "connected_inferred_from_legacy_loss": true
+        }
+      },
+      "best_connected_fixed_topology_soc": {
+        "model_revision": "legacy-continuous-model-v1",
+        "current_model_claim_eligible": false,
+        "loss_mw": 5.728549150368883,
+        "search_type": "legacy brute-force enumeration"
+      },
+      "methods": [
+        {
+          "method": "QAOA p1 noiseless",
+          "method_qubits": 4,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.1416962146759033,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.833615045209974,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p2 noiseless",
+          "method_qubits": 4,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.8048181533813477,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.833615045209974,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p1 noisy",
+          "method_qubits": 4,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.7205522060394287,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.833615045209974,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QRAO 3v",
+          "method_qubits": 4,
+          "optimizer_runs": 1,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.198918104171753,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.833615202506815,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "single QRAO run"
+          }
+        },
+        {
+          "method": "SA",
+          "method_qubits": 0,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.007685263951619466,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": null,
+            "radial": null,
+            "feasible": null,
+            "scope": "not recorded by the legacy benchmark"
+          }
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "qubo": {
+        "n_binary_variables": 6,
+        "standard_qaoa_qubits": 6,
+        "n_qubits": 6,
+        "objective_convention": {
+          "physical_branch_index": "k",
+          "binary_vector_position": "ell",
+          "binary_variable": "z_ell",
+          "variable_order": "variable_order_branch_indices",
+          "objective_symbol": "f_Q",
+          "objective_sense": "minimize",
+          "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+          "returned_array_order": "QuadraticProgram variable order"
+        },
+        "target_closed_switches": 2,
+        "constant": 0.0,
+        "variable_order_branch_indices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "linear_coefficients": [
+          -4.000000414009374,
+          -8.268640463542312,
+          -8.268640463542312,
+          -8.230147856360327,
+          -8.230147856360327,
+          -8.486765237573552
+        ],
+        "upper_triangular_quadratic_coefficients": [
+          [
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            7.5,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "offdiagonal_union_nonzero": 15,
+        "components": {
+          "consensus": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "loss": {
+            "linear": {
+              "nonzero": 6,
+              "coefficient_min": 0.5132347624264483,
+              "coefficient_max": 4.999999585990626
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "cardinality": {
+            "linear": {
+              "nonzero": 6,
+              "coefficient_min": -9.0,
+              "coefficient_max": -9.0
+            },
+            "quadratic": {
+              "nonzero": 15,
+              "coefficient_min": 6.0,
+              "coefficient_max": 6.0
+            }
+          },
+          "cycle": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 3,
+              "coefficient_min": 1.5,
+              "coefficient_max": 1.5
+            }
+          },
+          "anti_islanding": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          }
+        },
+        "topology_encoding": {
+          "revision": "heuristic-topology-qubo-v1",
+          "hard_connectivity_enforced": false,
+          "hard_radiality_enforced": false,
+          "cardinality_target_definition": "n_bus - 1 - rank(fixed subgraph)",
+          "cardinality_target_is_tree_valid": false,
+          "fixed_subgraph": {
+            "fixed_closed_count": 15,
+            "fixed_component_count": 3,
+            "fixed_cycle_rank": 2,
+            "fixed_is_forest": false,
+            "available_graph_connected": true
+          },
+          "exact_formulation": "radiality.solve_spanning_tree_milp",
+          "faulted_branches_excluded_from_decision_vector": []
+        },
+        "counting_note": "Component counts overlap: a pair can receive coefficients from more than one penalty. The union count is the nonzero count after summation."
+      },
+      "radiality_audit": {
+        "revision": "exact-radiality-v1",
+        "fixed_subgraph": {
+          "fixed_branch_indices": [
+            0,
+            1,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "fixed_closed_count": 15,
+          "fixed_component_count": 3,
+          "fixed_cycle_rank": 2,
+          "fixed_is_forest": false,
+          "target_closed_switches": 0
+        },
+        "hard_spanning_tree": {
+          "feasible": false,
+          "status": "infeasible: mandatory fixed branches contain a cycle",
+          "time_s": 4.410000110510737e-05,
+          "target_closed_switches": null,
+          "linear_impedance_proxy_objective": null,
+          "returned_bits": null
+        },
+        "actual_historical_qubo": {
+          "uniform_cardinality_plus_linear": false,
+          "unique_offdiagonal_coefficients": [
+            6.0,
+            7.5
+          ],
+          "exact_objective_recomputed_by_enumeration": -10.755405701115862,
+          "exact_enumeration_time_s": 0.0005090999984531663,
+          "one_current_enumerated_minimizer_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "all_current_enumerated_minimizers_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "topology_revision": "exact-radiality-v1",
+          "total_configurations": 64,
+          "target_cardinality_configurations": 15,
+          "radial_configurations": 0,
+          "cycle_surrogate_false_positive_radial_states": 0,
+          "cycle_surrogate_false_negative_nonradial_target_cardinality_states": 12,
+          "global_qubo_minimum": -10.755405701115862,
+          "global_qubo_minimizers": 2,
+          "global_qubo_minimizers_that_are_radial": 0,
+          "best_radial_qubo_objective": null,
+          "hard_radiality_objective_gap": null
+        },
+        "cardinality_only_baseline": {
+          "solver": "uniform-cardinality sorting/prefix",
+          "objective": -10.755405701115862,
+          "time_s": 9.960000170394778e-05,
+          "hamming_weight": 2,
+          "exact_enumeration_objective": -10.755405701115862,
+          "agrees_with_enumeration": true,
+          "scope": "exact only for the linear plus uniform-all-pairs cardinality variant with cycle and anti-islanding coefficients set to zero"
+        }
+      },
+      "exact_qubo": {
+        "objective": -10.755405701115862,
+        "objective_symbol": "f_Q_star",
+        "time_s": 0.02087545394897461,
+        "one_minimizer_bits_variable_order": null,
+        "returned_bits": null,
+        "retained_solver_bitstring_status": "not archived in the legacy aggregate artifact",
+        "current_enumeration": {
+          "scope": "reconstructed from the fully archived current QUBO coefficients; not the historical solver-returned bitstring",
+          "one_minimizer_bits_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "all_minimizers_bits_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1
+            ]
+          ]
+        },
+        "fixed_topology_soc": {
+          "model_revision": "legacy-continuous-model-v1",
+          "current_model_claim_eligible": false,
+          "loss_mw": null,
+          "connected": false,
+          "radial": null,
+          "feasible": false,
+          "connected_inferred_from_legacy_loss": true
+        }
+      },
+      "best_connected_fixed_topology_soc": {
+        "model_revision": "legacy-continuous-model-v1",
+        "current_model_claim_eligible": false,
+        "loss_mw": 5.728549196683233,
+        "search_type": "legacy brute-force enumeration"
+      },
+      "methods": [
+        {
+          "method": "QAOA p1 noiseless",
+          "method_qubits": 6,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.7074270248413086,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p2 noiseless",
+          "method_qubits": 6,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.9988070306767387,
+          "approximation_ratio_std": 0.001687113396451176,
+          "exact_optimum_hit_fraction": 0.6666666666666666,
+          "optimizer_run_exact_qubo_hit_fraction": 0.6666666666666666,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.9114431540171305,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p1 noisy",
+          "method_qubits": 6,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.9441938400268555,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QRAO 3v",
+          "method_qubits": 6,
+          "optimizer_runs": 1,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 4.450363874435425,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "single QRAO run"
+          }
+        },
+        {
+          "method": "SA",
+          "method_qubits": 0,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.0077664852142333984,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": null,
+            "radial": null,
+            "feasible": null,
+            "scope": "not recorded by the legacy benchmark"
+          }
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "qubo": {
+        "n_binary_variables": 8,
+        "standard_qaoa_qubits": 8,
+        "n_qubits": 8,
+        "objective_convention": {
+          "physical_branch_index": "k",
+          "binary_vector_position": "ell",
+          "binary_variable": "z_ell",
+          "variable_order": "variable_order_branch_indices",
+          "objective_symbol": "f_Q",
+          "objective_sense": "minimize",
+          "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+          "returned_array_order": "QuadraticProgram variable order"
+        },
+        "target_closed_switches": 3,
+        "constant": 0.0,
+        "variable_order_branch_indices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "linear_coefficients": [
+          -10.000000414009374,
+          -14.268640463542312,
+          -14.268640463542312,
+          -20.230147856360325,
+          -20.230147856360325,
+          -26.48676523757355,
+          -26.48676523757355,
+          -14.101839165753715
+        ],
+        "upper_triangular_quadratic_coefficients": [
+          [
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            7.5
+          ],
+          [
+            0.0,
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            7.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            13.5,
+            12.0,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.0,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "offdiagonal_union_nonzero": 28,
+        "components": {
+          "consensus": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "loss": {
+            "linear": {
+              "nonzero": 8,
+              "coefficient_min": 0.5132347624264483,
+              "coefficient_max": 4.999999585990626
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "cardinality": {
+            "linear": {
+              "nonzero": 8,
+              "coefficient_min": -15.0,
+              "coefficient_max": -15.0
+            },
+            "quadratic": {
+              "nonzero": 28,
+              "coefficient_min": 6.0,
+              "coefficient_max": 6.0
+            }
+          },
+          "cycle": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 6,
+              "coefficient_min": 1.5,
+              "coefficient_max": 1.5
+            }
+          },
+          "anti_islanding": {
+            "linear": {
+              "nonzero": 4,
+              "coefficient_min": -12.0,
+              "coefficient_max": -6.0
+            },
+            "quadratic": {
+              "nonzero": 6,
+              "coefficient_min": 6.0,
+              "coefficient_max": 12.0
+            }
+          }
+        },
+        "topology_encoding": {
+          "revision": "heuristic-topology-qubo-v1",
+          "hard_connectivity_enforced": false,
+          "hard_radiality_enforced": false,
+          "cardinality_target_definition": "n_bus - 1 - rank(fixed subgraph)",
+          "cardinality_target_is_tree_valid": false,
+          "fixed_subgraph": {
+            "fixed_closed_count": 13,
+            "fixed_component_count": 4,
+            "fixed_cycle_rank": 1,
+            "fixed_is_forest": false,
+            "available_graph_connected": true
+          },
+          "exact_formulation": "radiality.solve_spanning_tree_milp",
+          "faulted_branches_excluded_from_decision_vector": []
+        },
+        "counting_note": "Component counts overlap: a pair can receive coefficients from more than one penalty. The union count is the nonzero count after summation."
+      },
+      "radiality_audit": {
+        "revision": "exact-radiality-v1",
+        "fixed_subgraph": {
+          "fixed_branch_indices": [
+            0,
+            1,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "fixed_closed_count": 13,
+          "fixed_component_count": 4,
+          "fixed_cycle_rank": 1,
+          "fixed_is_forest": false,
+          "target_closed_switches": 2
+        },
+        "hard_spanning_tree": {
+          "feasible": false,
+          "status": "infeasible: mandatory fixed branches contain a cycle",
+          "time_s": 3.699999797390774e-05,
+          "target_closed_switches": null,
+          "linear_impedance_proxy_objective": null,
+          "returned_bits": null
+        },
+        "actual_historical_qubo": {
+          "uniform_cardinality_plus_linear": false,
+          "unique_offdiagonal_coefficients": [
+            6.0,
+            7.5,
+            12.0,
+            13.5,
+            19.5
+          ],
+          "exact_objective_recomputed_by_enumeration": -36.98555355747619,
+          "exact_enumeration_time_s": 0.0021211000021139625,
+          "one_current_enumerated_minimizer_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "all_current_enumerated_minimizers_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              0
+            ]
+          ],
+          "topology_revision": "exact-radiality-v1",
+          "total_configurations": 256,
+          "target_cardinality_configurations": 56,
+          "radial_configurations": 0,
+          "cycle_surrogate_false_positive_radial_states": 0,
+          "cycle_surrogate_false_negative_nonradial_target_cardinality_states": 24,
+          "global_qubo_minimum": -36.98555355747619,
+          "global_qubo_minimizers": 8,
+          "global_qubo_minimizers_that_are_radial": 0,
+          "best_radial_qubo_objective": null,
+          "hard_radiality_objective_gap": null
+        },
+        "cardinality_only_baseline": {
+          "solver": "uniform-cardinality sorting/prefix",
+          "objective": -25.242170938689412,
+          "time_s": 8.990000060293823e-05,
+          "hamming_weight": 3,
+          "exact_enumeration_objective": -25.242170938689412,
+          "agrees_with_enumeration": true,
+          "scope": "exact only for the linear plus uniform-all-pairs cardinality variant with cycle and anti-islanding coefficients set to zero"
+        }
+      },
+      "exact_qubo": {
+        "objective": -36.98555355747619,
+        "objective_symbol": "f_Q_star",
+        "time_s": 0.018626689910888672,
+        "one_minimizer_bits_variable_order": null,
+        "returned_bits": null,
+        "retained_solver_bitstring_status": "not archived in the legacy aggregate artifact",
+        "current_enumeration": {
+          "scope": "reconstructed from the fully archived current QUBO coefficients; not the historical solver-returned bitstring",
+          "one_minimizer_bits_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "all_minimizers_bits_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              0
+            ]
+          ]
+        },
+        "fixed_topology_soc": {
+          "model_revision": "legacy-continuous-model-v1",
+          "current_model_claim_eligible": false,
+          "loss_mw": 5.921682230192468,
+          "connected": true,
+          "radial": null,
+          "feasible": true,
+          "connected_inferred_from_legacy_loss": true
+        }
+      },
+      "best_connected_fixed_topology_soc": {
+        "model_revision": "legacy-continuous-model-v1",
+        "current_model_claim_eligible": false,
+        "loss_mw": 5.728549192410075,
+        "search_type": "legacy brute-force enumeration"
+      },
+      "methods": [
+        {
+          "method": "QAOA p1 noiseless",
+          "method_qubits": 8,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.1190196673075359,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.9216822243411755,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p2 noiseless",
+          "method_qubits": 8,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.426630179087321,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.921682230192468,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p1 noisy",
+          "method_qubits": 8,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 2.2897769610087075,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.921682223677252,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QRAO 3v",
+          "method_qubits": 8,
+          "optimizer_runs": 1,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 6.794123411178589,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": 5.921682221249236,
+            "connected": true,
+            "radial": null,
+            "feasible": true,
+            "scope": "single QRAO run"
+          }
+        },
+        {
+          "method": "SA",
+          "method_qubits": 0,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.007741610209147136,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": null,
+            "radial": null,
+            "feasible": null,
+            "scope": "not recorded by the legacy benchmark"
+          }
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "qubo": {
+        "n_binary_variables": 10,
+        "standard_qaoa_qubits": 10,
+        "n_qubits": 10,
+        "objective_convention": {
+          "physical_branch_index": "k",
+          "binary_vector_position": "ell",
+          "binary_variable": "z_ell",
+          "variable_order": "variable_order_branch_indices",
+          "objective_symbol": "f_Q",
+          "objective_sense": "minimize",
+          "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+          "returned_array_order": "QuadraticProgram variable order"
+        },
+        "target_closed_switches": 4,
+        "constant": 0.0,
+        "variable_order_branch_indices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12
+        ],
+        "linear_coefficients": [
+          -22.65227304030907,
+          -26.364049632565287,
+          -26.364049632565287,
+          -32.330578560595036,
+          -32.330578560595036,
+          -32.55371904039669,
+          -32.55371904039669,
+          -32.219008320694215,
+          -32.219008320694215,
+          -16.000000359999973
+        ],
+        "upper_triangular_quadratic_coefficients": [
+          [
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            13.5,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            13.5,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            13.5,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            12.0,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            12.0,
+            12.0,
+            12.0,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.0,
+            12.0,
+            12.0,
+            12.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "offdiagonal_union_nonzero": 45,
+        "components": {
+          "consensus": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "loss": {
+            "linear": {
+              "nonzero": 10,
+              "coefficient_min": 0.44628095960330805,
+              "coefficient_max": 4.999999640000026
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "cardinality": {
+            "linear": {
+              "nonzero": 10,
+              "coefficient_min": -21.0,
+              "coefficient_max": -21.0
+            },
+            "quadratic": {
+              "nonzero": 45,
+              "coefficient_min": 6.0,
+              "coefficient_max": 6.0
+            }
+          },
+          "cycle": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 7,
+              "coefficient_min": 1.5,
+              "coefficient_max": 1.5
+            }
+          },
+          "anti_islanding": {
+            "linear": {
+              "nonzero": 9,
+              "coefficient_min": -12.0,
+              "coefficient_max": -6.0
+            },
+            "quadratic": {
+              "nonzero": 22,
+              "coefficient_min": 6.0,
+              "coefficient_max": 12.0
+            }
+          }
+        },
+        "topology_encoding": {
+          "revision": "heuristic-topology-qubo-v1",
+          "hard_connectivity_enforced": false,
+          "hard_radiality_enforced": false,
+          "cardinality_target_definition": "n_bus - 1 - rank(fixed subgraph)",
+          "cardinality_target_is_tree_valid": true,
+          "fixed_subgraph": {
+            "fixed_closed_count": 11,
+            "fixed_component_count": 5,
+            "fixed_cycle_rank": 0,
+            "fixed_is_forest": true,
+            "available_graph_connected": true
+          },
+          "exact_formulation": "radiality.solve_spanning_tree_milp",
+          "faulted_branches_excluded_from_decision_vector": []
+        },
+        "counting_note": "Component counts overlap: a pair can receive coefficients from more than one penalty. The union count is the nonzero count after summation."
+      },
+      "radiality_audit": {
+        "revision": "exact-radiality-v1",
+        "fixed_subgraph": {
+          "fixed_branch_indices": [
+            0,
+            1,
+            11,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "fixed_closed_count": 11,
+          "fixed_component_count": 5,
+          "fixed_cycle_rank": 0,
+          "fixed_is_forest": true,
+          "target_closed_switches": 4
+        },
+        "hard_spanning_tree": {
+          "feasible": true,
+          "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "time_s": 0.0017235999985132366,
+          "target_closed_switches": 4,
+          "linear_impedance_proxy_objective": 0.08916322314049586,
+          "returned_bits": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "actual_historical_qubo": {
+          "uniform_cardinality_plus_linear": false,
+          "unique_offdiagonal_coefficients": [
+            6.0,
+            7.5,
+            12.0,
+            13.5,
+            19.5
+          ],
+          "exact_objective_recomputed_by_enumeration": -68.19049603405287,
+          "exact_enumeration_time_s": 0.008304099999804748,
+          "one_current_enumerated_minimizer_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "all_current_enumerated_minimizers_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ]
+          ],
+          "topology_revision": "exact-radiality-v1",
+          "total_configurations": 1024,
+          "target_cardinality_configurations": 210,
+          "radial_configurations": 32,
+          "cycle_surrogate_false_positive_radial_states": 12,
+          "cycle_surrogate_false_negative_nonradial_target_cardinality_states": 45,
+          "global_qubo_minimum": -68.19049603405287,
+          "global_qubo_minimizers": 3,
+          "global_qubo_minimizers_that_are_radial": 0,
+          "best_radial_qubo_objective": -65.90062027386608,
+          "hard_radiality_objective_gap": 2.2898757601867885
+        },
+        "cardinality_only_baseline": {
+          "solver": "uniform-cardinality sorting/prefix",
+          "objective": -45.83553734592395,
+          "time_s": 0.0001419000000169035,
+          "hamming_weight": 4,
+          "exact_enumeration_objective": -45.83553734592397,
+          "agrees_with_enumeration": true,
+          "scope": "exact only for the linear plus uniform-all-pairs cardinality variant with cycle and anti-islanding coefficients set to zero"
+        }
+      },
+      "exact_qubo": {
+        "objective": -68.19049603405288,
+        "objective_symbol": "f_Q_star",
+        "time_s": 0.02628350257873535,
+        "one_minimizer_bits_variable_order": null,
+        "returned_bits": null,
+        "retained_solver_bitstring_status": "not archived in the legacy aggregate artifact",
+        "current_enumeration": {
+          "scope": "reconstructed from the fully archived current QUBO coefficients; not the historical solver-returned bitstring",
+          "one_minimizer_bits_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "all_minimizers_bits_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        "fixed_topology_soc": {
+          "model_revision": "legacy-continuous-model-v1",
+          "current_model_claim_eligible": false,
+          "loss_mw": null,
+          "connected": false,
+          "radial": null,
+          "feasible": false,
+          "connected_inferred_from_legacy_loss": true
+        }
+      },
+      "best_connected_fixed_topology_soc": {
+        "model_revision": "legacy-continuous-model-v1",
+        "current_model_claim_eligible": false,
+        "loss_mw": 5.728549170103816,
+        "search_type": "legacy brute-force enumeration"
+      },
+      "methods": [
+        {
+          "method": "QAOA p1 noiseless",
+          "method_qubits": 10,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.994685524740261,
+          "approximation_ratio_std": 0.007515802989219345,
+          "exact_optimum_hit_fraction": 0.6666666666666666,
+          "optimizer_run_exact_qubo_hit_fraction": 0.6666666666666666,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.6421789328257244,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p2 noiseless",
+          "method_qubits": 10,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.994849140267922,
+          "approximation_ratio_std": 0.007284415690986152,
+          "exact_optimum_hit_fraction": 0.6666666666666666,
+          "optimizer_run_exact_qubo_hit_fraction": 0.6666666666666666,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 2.1685657501220703,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p1 noisy",
+          "method_qubits": 10,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 27.462149222691853,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QRAO 3v",
+          "method_qubits": 10,
+          "optimizer_runs": 1,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 11.690614700317383,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "single QRAO run"
+          }
+        },
+        {
+          "method": "SA",
+          "method_qubits": 0,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.994849140267922,
+          "approximation_ratio_std": 0.007284415690986152,
+          "exact_optimum_hit_fraction": 0.6666666666666666,
+          "optimizer_run_exact_qubo_hit_fraction": 0.6666666666666666,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.006499449412027995,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": null,
+            "radial": null,
+            "feasible": null,
+            "scope": "not recorded by the legacy benchmark"
+          }
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "qubo": {
+        "n_binary_variables": 12,
+        "standard_qaoa_qubits": 12,
+        "n_qubits": 12,
+        "objective_convention": {
+          "physical_branch_index": "k",
+          "binary_vector_position": "ell",
+          "binary_variable": "z_ell",
+          "variable_order": "variable_order_branch_indices",
+          "objective_symbol": "f_Q",
+          "objective_sense": "minimize",
+          "binary_to_pauli_mapping": "z_ell = (1 - Z_ell) / 2",
+          "returned_array_order": "QuadraticProgram variable order"
+        },
+        "target_closed_switches": 6,
+        "constant": 0.0,
+        "variable_order_branch_indices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          12,
+          13,
+          17
+        ],
+        "linear_coefficients": [
+          -35.5839287646806,
+          -38.50032470359202,
+          -38.50032470359202,
+          -44.47402600378108,
+          -44.47402600378108,
+          -44.649350669187385,
+          -44.649350669187385,
+          -44.38636367107792,
+          -44.38636367107792,
+          -35.071428793673455,
+          -34.00000028285713,
+          -36.14285730448979
+        ],
+        "upper_triangular_quadratic_coefficients": [
+          [
+            0.0,
+            7.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            13.5,
+            12.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            13.5,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            13.5,
+            12.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            12.0,
+            12.0,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.0,
+            12.0,
+            12.0,
+            12.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            19.5,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            13.5,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "offdiagonal_union_nonzero": 66,
+        "components": {
+          "consensus": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "loss": {
+            "linear": {
+              "nonzero": 12,
+              "coefficient_min": 0.35064933081261707,
+              "coefficient_max": 4.999999717142874
+            },
+            "quadratic": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            }
+          },
+          "cardinality": {
+            "linear": {
+              "nonzero": 12,
+              "coefficient_min": -33.0,
+              "coefficient_max": -33.0
+            },
+            "quadratic": {
+              "nonzero": 66,
+              "coefficient_min": 6.0,
+              "coefficient_max": 6.0
+            }
+          },
+          "cycle": {
+            "linear": {
+              "nonzero": 0,
+              "coefficient_min": null,
+              "coefficient_max": null
+            },
+            "quadratic": {
+              "nonzero": 8,
+              "coefficient_min": 1.5,
+              "coefficient_max": 1.5
+            }
+          },
+          "anti_islanding": {
+            "linear": {
+              "nonzero": 12,
+              "coefficient_min": -12.0,
+              "coefficient_max": -6.0
+            },
+            "quadratic": {
+              "nonzero": 23,
+              "coefficient_min": 6.0,
+              "coefficient_max": 12.0
+            }
+          }
+        },
+        "topology_encoding": {
+          "revision": "heuristic-topology-qubo-v1",
+          "hard_connectivity_enforced": false,
+          "hard_radiality_enforced": false,
+          "cardinality_target_definition": "n_bus - 1 - rank(fixed subgraph)",
+          "cardinality_target_is_tree_valid": true,
+          "fixed_subgraph": {
+            "fixed_closed_count": 9,
+            "fixed_component_count": 7,
+            "fixed_cycle_rank": 0,
+            "fixed_is_forest": true,
+            "available_graph_connected": true
+          },
+          "exact_formulation": "radiality.solve_spanning_tree_milp",
+          "faulted_branches_excluded_from_decision_vector": []
+        },
+        "counting_note": "Component counts overlap: a pair can receive coefficients from more than one penalty. The union count is the nonzero count after summation."
+      },
+      "radiality_audit": {
+        "revision": "exact-radiality-v1",
+        "fixed_subgraph": {
+          "fixed_branch_indices": [
+            0,
+            1,
+            11,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20
+          ],
+          "fixed_closed_count": 9,
+          "fixed_component_count": 7,
+          "fixed_cycle_rank": 0,
+          "fixed_is_forest": true,
+          "target_closed_switches": 6
+        },
+        "hard_spanning_tree": {
+          "feasible": true,
+          "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "time_s": 0.00268320000031963,
+          "target_closed_switches": 6,
+          "linear_impedance_proxy_objective": 0.20038911845730029,
+          "returned_bits": [
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "actual_historical_qubo": {
+          "uniform_cardinality_plus_linear": false,
+          "unique_offdiagonal_coefficients": [
+            6.0,
+            7.5,
+            12.0,
+            13.5,
+            19.5
+          ],
+          "exact_objective_recomputed_by_enumeration": -133.89967581120794,
+          "exact_enumeration_time_s": 0.033111599997937446,
+          "one_current_enumerated_minimizer_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "all_current_enumerated_minimizers_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1
+            ]
+          ],
+          "topology_revision": "exact-radiality-v1",
+          "total_configurations": 4096,
+          "target_cardinality_configurations": 924,
+          "radial_configurations": 64,
+          "cycle_surrogate_false_positive_radial_states": 24,
+          "cycle_surrogate_false_negative_nonradial_target_cardinality_states": 20,
+          "global_qubo_minimum": -133.89967581120794,
+          "global_qubo_minimizers": 3,
+          "global_qubo_minimizers_that_are_radial": 0,
+          "best_radial_qubo_objective": -132.4219162394043,
+          "hard_radiality_objective_gap": 1.477759571803631
+        },
+        "cardinality_only_baseline": {
+          "solver": "uniform-cardinality sorting/prefix",
+          "objective": -105.24740275312098,
+          "time_s": 0.00015729999722680077,
+          "hamming_weight": 6,
+          "exact_enumeration_objective": -105.24740275312098,
+          "agrees_with_enumeration": true,
+          "scope": "exact only for the linear plus uniform-all-pairs cardinality variant with cycle and anti-islanding coefficients set to zero"
+        }
+      },
+      "exact_qubo": {
+        "objective": -133.89967581120794,
+        "objective_symbol": "f_Q_star",
+        "time_s": 0.03577566146850586,
+        "one_minimizer_bits_variable_order": null,
+        "returned_bits": null,
+        "retained_solver_bitstring_status": "not archived in the legacy aggregate artifact",
+        "current_enumeration": {
+          "scope": "reconstructed from the fully archived current QUBO coefficients; not the historical solver-returned bitstring",
+          "one_minimizer_bits_variable_order": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "all_minimizers_bits_variable_order": [
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1
+            ]
+          ]
+        },
+        "fixed_topology_soc": {
+          "model_revision": "legacy-continuous-model-v1",
+          "current_model_claim_eligible": false,
+          "loss_mw": null,
+          "connected": false,
+          "radial": null,
+          "feasible": false,
+          "connected_inferred_from_legacy_loss": true
+        }
+      },
+      "best_connected_fixed_topology_soc": {
+        "model_revision": "legacy-continuous-model-v1",
+        "current_model_claim_eligible": false,
+        "loss_mw": null,
+        "search_type": "legacy brute-force enumeration"
+      },
+      "methods": [
+        {
+          "method": "QAOA p1 noiseless",
+          "method_qubits": 12,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.9870174012852249,
+          "approximation_ratio_std": 0.012780400702509213,
+          "exact_optimum_hit_fraction": 0.3333333333333333,
+          "optimizer_run_exact_qubo_hit_fraction": 0.3333333333333333,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 1.7176574071248372,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p2 noiseless",
+          "method_qubits": 12,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.9893766982693997,
+          "approximation_ratio_std": 0.00951606219957022,
+          "exact_optimum_hit_fraction": 0.3333333333333333,
+          "optimizer_run_exact_qubo_hit_fraction": 0.3333333333333333,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 3.04473614692688,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QAOA p1 noisy",
+          "method_qubits": 12,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.9872113827316548,
+          "approximation_ratio_std": 0.009288297621719255,
+          "exact_optimum_hit_fraction": 0.3333333333333333,
+          "optimizer_run_exact_qubo_hit_fraction": 0.3333333333333333,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 96.17185195287068,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "last optimizer seed only (legacy benchmark behavior)"
+          }
+        },
+        {
+          "method": "QRAO 3v",
+          "method_qubits": 12,
+          "optimizer_runs": 1,
+          "approximation_ratio_mean": 1.0,
+          "approximation_ratio_std": 0.0,
+          "exact_optimum_hit_fraction": 1.0,
+          "optimizer_run_exact_qubo_hit_fraction": 1.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 45.62301754951477,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": false,
+            "radial": null,
+            "feasible": false,
+            "scope": "single QRAO run"
+          }
+        },
+        {
+          "method": "SA",
+          "method_qubits": 0,
+          "optimizer_runs": 3,
+          "approximation_ratio_mean": 0.9843812777583215,
+          "approximation_ratio_std": 0.0033686269078643857,
+          "exact_optimum_hit_fraction": 0.0,
+          "optimizer_run_exact_qubo_hit_fraction": 0.0,
+          "hit_fraction_definition": "fraction of independent optimizer runs whose returned objective reached the exact QUBO optimum",
+          "time_mean_s": 0.007398923238118489,
+          "representative_fixed_topology_soc": {
+            "model_revision": "legacy-continuous-model-v1",
+            "current_model_claim_eligible": false,
+            "loss_mw": null,
+            "connected": null,
+            "radial": null,
+            "feasible": null,
+            "scope": "not recorded by the legacy benchmark"
+          }
+        }
+      ]
+    }
+  ],
+  "excluded_evidence": {
+    "admm": {
+      "status": "excluded from frozen claims",
+      "reason": "No machine-readable ADMM iteration histories were released."
+    },
+    "hardware": {
+      "status": "excluded from frozen claims",
+      "reason": "No raw counts, backend/calibration metadata, transpiled circuit artifact, or exported job results were released.",
+      "required_schema": "hardware-evidence-v2",
+      "required_metrics": [
+        "modal sample and objective",
+        "best-energy sampled bitstring and objective",
+        "complete exact-QUBO minimizer set and f_Q_star",
+        "sampled-objective mean and standard error",
+        "shot-level probability assigned to the exact-QUBO minimizer set",
+        "same-instance topology, SOC, and nonlinear AC validation"
+      ]
+    },
+    "qrao_ablation": {
+      "status": "excluded from frozen claims",
+      "reason": "No machine-readable ablation results were released."
+    },
+    "qiskit_admm_optimizer": {
+      "status": "excluded from benchmark comparison",
+      "reason": "The repository contains code but no numerical result artifact."
+    }
+  }
+}

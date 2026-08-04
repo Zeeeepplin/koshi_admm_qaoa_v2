@@ -1,0 +1,596 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+\setlist{leftmargin=*,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+
+\definecolor{donegreen}{RGB}{30,115,65}
+\definecolor{partialamber}{RGB}{160,95,0}
+\definecolor{blockred}{RGB}{160,35,35}
+\definecolor{externalblue}{RGB}{25,75,145}
+
+\newcommand{\done}{\textcolor{donegreen}{\textbf{Implemented}}}
+\newcommand{\partialstatus}{\textcolor{partialamber}{\textbf{Partial}}}
+\newcommand{\blocked}{\textcolor{blockred}{\textbf{Submission blocker}}}
+\newcommand{\external}{\textcolor{externalblue}{\textbf{External run required}}}
+\newcommand{\optional}{\textcolor{externalblue}{\textbf{Optional}}}
+\newcommand{\file}[1]{\path{#1}}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Submission-Readiness and Regeneration Plan}\par
+  \vspace{0.35em}
+  {\large Hybrid Quantum-Classical ADMM--QAOA Manuscript}\par
+  \vspace{0.35em}
+  Prepared July 24, 2026
+\end{center}
+
+\section*{Purpose and recommended submission path}
+
+This document records the remaining work needed to make the corrections to
+review findings 1--5 appear consistently in the code, evidence artifacts,
+figures, tables, numerical prose, and final submission package.  It is an
+execution and acceptance plan, not a source of numerical results.
+
+The recommended path is a \emph{conservative, software-and-simulation
+submission}: regenerate the predeclared post-contingency benchmark,
+sensitivity analysis, ADMM histories, fixed-topology SOC diagnostics, and
+nonlinear AC recovery in the documented environment, but keep quantitative
+hardware claims excluded unless a repeated multi-date hardware campaign is
+completed.  This path is scientifically complete enough to answer the five
+review findings without making a two-job hardware comparison carry more
+weight than it can support.
+
+No new post-contingency number should be copied into \file{main_2.tex} by
+hand.  Numerical prose must be generated from validated artifacts or be
+limited to qualitative statements that remain true independently of a run.
+
+\section*{1. Current corrected baseline}
+
+\begin{longtable}{p{0.13\textwidth}p{0.24\textwidth}p{0.54\textwidth}}
+\toprule
+\textbf{Review item} & \textbf{Current status} & \textbf{What is already in place} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Review item} & \textbf{Current status} & \textbf{What is already in place} \\
+\midrule
+\endhead
+1: QUBO structure & \done & Component-level QUBO accounting, the exact
+sorting/prefix baseline for the uniform-cardinality special case, exact
+radial enumeration, and a flow-based spanning-tree MILP are implemented.
+The manuscript no longer equates density with hardness. \\
+\addlinespace
+2: artifact contradictions & \done{} for the retained artifact; \partialstatus{}
+for new results & One strict legacy JSON artifact drives its CSV, figures,
+macros, and appendix table.  The old ``success probability'' is correctly
+described as an optimizer-run exact-QUBO hit fraction.  Unsupported SA,
+ADMM, library-baseline, and hardware values are not reconstructed. \\
+\addlinespace
+3: continuous model & \done{} in code and equations; \external{} for numbers
+& Continuous-model-v2 includes two-sided voltage-drop deactivation,
+fixed-power-factor shedding, branch-specific ratings, explicit transformer
+taps, slack balance, units, and validation diagnostics.  The retained
+continuous-model-v1 losses are marked stale. \\
+\addlinespace
+4: AC validation & \done{} in validation logic; \external{} for evidence &
+The code distinguishes SOC feasibility, cone tightness, angle recovery, and
+nonlinear fixed-injection AC power-flow validation.  The manuscript no longer
+calls a SOC relaxation result ``AC-true.'' \\
+\addlinespace
+5: radiality mathematics & \done{} in formulation and audit; \external{} for
+the prospective comparison & The historical pairwise cycle and
+anti-islanding terms are explicitly called heuristic surrogates.  Exact
+spanning-tree constraints, exhaustive false-positive/false-negative auditing,
+and cycle-safe final projection with an action log are available. \\
+\bottomrule
+\end{longtable}
+
+The current retained benchmark remains a base-case, legacy scaling artifact.
+It is useful for audit history, but it cannot support a post-contingency
+engineering conclusion or a current-model physical comparison.
+
+\section*{2. Non-negotiable evidence hierarchy}
+
+For the final paper, evidence should flow in one direction:
+\[
+\begin{aligned}
+\text{protocol and code}
+&\longrightarrow \text{strict JSON artifacts}
+\longrightarrow \text{validated manifest}\\
+&\longrightarrow \text{generated tables, figures, and macros}
+\longrightarrow \text{manuscript prose}.
+\end{aligned}
+\]
+
+The following rules should be enforced.
+
+\begin{enumerate}
+  \item \file{koshi_admm_qaoa/results/study_protocol.json} is frozen before
+  prospective execution.  Its hash must be stored in every prospective
+  artifact.
+  \item Raw or per-seed outputs are never replaced by aggregate-only rows.
+  Every stochastic result must preserve its seed, bitstring, objective,
+  topology flags, projection record, and continuous-validation record.
+  \item JSON must be strict: no \texttt{NaN}, \texttt{Infinity}, or implicit
+  missing-value substitutions.  Missing evidence is represented explicitly
+  with a documented status and reason.
+  \item Generated TeX and PNG files are read-only products of the pipeline.
+  If a number must change, the JSON-producing run or generator must change.
+  \item The manifest must hash the protocol, primary results, sensitivity
+  results, ADMM histories, generated tables, generated macros, and figures.
+  \item A clean checkout must be able to run all validation-only checks
+  without access to the original execution machine.
+\end{enumerate}
+
+\section*{3. Pre-run blockers to close}
+
+These items should be fixed before spending time on the full prospective run.
+Otherwise a successful computation can still produce evidence that cannot be
+used safely in the paper.
+
+\subsection*{3.1 Correct the QUBO-to-Ising and QAOA objective convention}
+
+\blocked.  The current QAOA primer writes the QUBO coefficients directly as
+Pauli coefficients and says the expectation is maximized.  The paper must
+instead derive the mapping used by the implementation.  For a minimization
+QUBO
+\[
+ f_Q(z)=c_0+\sum_i q_i z_i+\sum_{i<j}q_{ij}z_i z_j,
+ \qquad z_i=\frac{1-Z_i}{2},
+\]
+the manuscript should display
+\[
+ H_Q=\kappa I+\sum_i h_i Z_i+\sum_{i<j}J_{ij}Z_iZ_j,
+ \quad J_{ij}=\frac{q_{ij}}{4},
+ \quad h_i=-\frac{q_i}{2}-\frac14\sum_{j\ne i}q_{ij},
+\]
+with the corresponding constant $\kappa$.  It must then state unambiguously
+whether the classical optimizer minimizes $\langle H_Q\rangle$ or maximizes
+$\langle -H_Q\rangle$.  The bit-order convention must be verified against
+Qiskit's returned samples with a small exhaustive unit test.
+
+Required changes:
+\begin{itemize}
+  \item replace the QAOA Hamiltonian paragraph in
+  Section ``Quantum solvers'' of \file{main_2.tex};
+  \item add a unit test comparing the classical QUBO value and diagonal
+  Hamiltonian energy for every bitstring of a small instance, including the
+  additive constant;
+  \item archive the objective-sense and endianness conventions in each
+  prospective artifact.
+\end{itemize}
+
+\subsection*{3.2 Make the QRAO description implementation-exact}
+
+\blocked.  The final text must describe the actual variable-to-Pauli
+assignment, interaction-graph coloring or grouping rule, encoded Hamiltonian,
+ansatz, optimizer, and \texttt{MagicRounding} output produced by the installed
+QRAO version.  Compression must be reported from the archived mapping, not
+explained by an untested causal story.  Add a machine-readable field for every
+variable's qubit and Pauli assignment, and retain the rounded samples used for
+each score.  If the installed library cannot export these data reliably, keep
+the QRAO discussion descriptive and report only the observed qubit count and
+objective distribution.
+
+\subsection*{3.3 Score raw and projected topologies separately}
+
+\blocked.  A cycle-safe projection is an engineering post-processing step; it
+must not silently replace a solver's raw bitstring.  Before the run, extend the
+prospective artifact schema so each trial contains:
+\begin{itemize}
+  \item the raw sampled bitstring and raw QUBO objective;
+  \item raw connected/radial/component-count/cycle-rank flags;
+  \item the projected bitstring, ordered repair actions, and whether any
+  action was required;
+  \item the projected bitstring's QUBO objective and objective change;
+  \item fixed-topology SOC and nonlinear AC validation for the projected
+  topology; and, where computationally practical, for the raw topology;
+  \item an explicit distinction among ``solver output,'' ``projected
+  operational candidate,'' and ``exact hard-radial reference.''
+\end{itemize}
+
+Primary QUBO-quality comparisons should use raw outputs.  Engineering
+feasibility comparisons may use projected candidates, but must report the
+projection rate and cost of repair.
+
+\subsection*{3.4 Complete generated numerical prose and validation tables}
+
+\blocked.  The prospective pipeline currently generates two tables and one
+figure, but the abstract and conclusion also need generated macros.  Add:
+\begin{itemize}
+  \item \file{koshi_admm_qaoa/generated/post_contingency_numbers.tex},
+  containing only validated headline macros;
+  \item \file{koshi_admm_qaoa/generated/post_contingency_validation_table.tex},
+  containing per-method topology, SOC status, maximum cone slack,
+  angle-recovery residual, maximum voltage/thermal violation, nonlinear
+  convergence, and validated-loss summaries;
+  \item consistency checks that fail if \file{main_2.tex} contains a stale
+  hard-coded headline value or references a missing generated file;
+  \item hashes for both files in
+  \file{koshi_admm_qaoa/results/post_contingency_manifest.json}.
+\end{itemize}
+
+\subsection*{3.5 Decide the hardware scope before submission}
+
+Choose one of two mutually exclusive paths.
+
+\begin{itemize}
+  \item \textbf{Recommended: hardware excluded.} Retain the definitions and evidence
+  contract as reproducibility guidance, state that no validated hardware
+  package is reported, and make no performance, noise, mitigation, or
+  feasibility claim from the old jobs.
+  \item \textbf{Hardware included.} Implement a campaign-level aggregator before
+  submitting jobs.  It must combine at least the predeclared number of matched
+  baseline/noise-management pairs across at least three calibration dates,
+  validate every package, preserve per-job results, and calculate paired
+  uncertainty without treating shots from one job as independent device
+  replications.
+\end{itemize}
+
+\section*{4. Required external regeneration}
+
+\external.  A full external run is strictly required before the manuscript
+can report post-contingency results from continuous-model-v2.  The present
+workspace does not contain the required complete Qiskit/CVXPY execution
+environment or the resulting prospective artifacts.
+
+Run the following from the repository root in the documented, frozen
+environment after the pre-run blockers above are resolved:
+
+\begin{verbatim}
+python koshi_admm_qaoa/study_protocol.py
+python koshi_admm_qaoa/artifact_pipeline.py --check
+
+python koshi_admm_qaoa/benchmark.py --post-contingency
+python koshi_admm_qaoa/run_post_contingency_sensitivity.py
+python koshi_admm_qaoa/make_post_contingency_admm.py
+
+python koshi_admm_qaoa/post_contingency_pipeline.py
+python koshi_admm_qaoa/post_contingency_pipeline.py --check
+
+python -m unittest discover -s koshi_admm_qaoa/tests -p 'test_*.py'
+\end{verbatim}
+
+The required source artifacts are:
+\begin{itemize}
+  \item \file{koshi_admm_qaoa/results/post_contingency_v1.json};
+  \item \file{koshi_admm_qaoa/results/post_contingency_sensitivity_v1.json};
+  \item \file{koshi_admm_qaoa/results/admm_post_contingency_v1.json}.
+\end{itemize}
+
+The required derived products are:
+\begin{itemize}
+  \item \file{koshi_admm_qaoa/generated/post_contingency_results_table.tex};
+  \item \file{koshi_admm_qaoa/generated/post_contingency_admm_table.tex};
+  \item \file{koshi_admm_qaoa/generated/post_contingency_validation_table.tex};
+  \item \file{koshi_admm_qaoa/generated/post_contingency_numbers.tex};
+  \item \file{koshi_admm_qaoa/figures/post_contingency_objective_gaps.png};
+  \item \file{koshi_admm_qaoa/results/post_contingency_manifest.json}.
+\end{itemize}
+
+The run is unacceptable if any trial count is short, any protocol hash
+differs, any expected seed is absent or duplicated, any validation field is
+missing, a JSON file contains non-finite values, or the post-contingency
+manifest check fails.
+
+\subsection*{Optional hardware execution}
+
+Only if the hardware-included path is chosen, first run the local self-test,
+then execute the repeated QPU campaign.  A single example package is created
+by:
+
+\begin{verbatim}
+python koshi_admm_qaoa/phase3_hardware.py --selftest --shots 4096
+python koshi_admm_qaoa/phase3_hardware.py --shots 4096
+
+python koshi_admm_qaoa/hardware_evidence.py \
+  koshi_admm_qaoa/results/hardware_YYYYMMDDTHHMMSSZ \
+  --write-tex koshi_admm_qaoa/generated/hardware_evidence_tables.tex
+\end{verbatim}
+
+The timestamped directory name must be replaced by the actual output.  This
+validates one evidence package; it does not by itself satisfy the repeated
+campaign requirement.  Do not insert the generated hardware tables until the
+campaign-level validator also passes.
+
+\section*{5. Artifact-to-manuscript integration map}
+
+\begin{longtable}{p{0.31\textwidth}p{0.27\textwidth}p{0.34\textwidth}}
+\toprule
+\textbf{Artifact} & \textbf{Manuscript destination} & \textbf{Permitted use} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Artifact} & \textbf{Manuscript destination} & \textbf{Permitted use} \\
+\midrule
+\endhead
+\file{generated/post_contingency_numbers.tex} & Preamble, immediately after
+\file{generated/paper_numbers.tex} & Headline values in the abstract,
+Results, Discussion, and Conclusion.  No hand-entered duplicates. \\
+\addlinespace
+\file{generated/post_contingency_results_table.tex} & Results, immediately
+after ``Prospective post-contingency result status'' & Raw-gap distributions,
+exact-QUBO hit fractions, and clearly labelled topology/validation rates. \\
+\addlinespace
+\file{generated/post_contingency_admm_table.tex} & New Results subsection
+``Post-contingency ADMM convergence'' & Both residuals, termination status,
+final raw/projected topology, projection actions, and current-model
+validation. \\
+\addlinespace
+\file{generated/post_contingency_validation_table.tex} & New Results
+subsection ``Physical validation of projected candidates'' & SOC status,
+cone tightness, angle recovery, thermal/voltage residuals, nonlinear
+power-flow convergence, and loss. \\
+\addlinespace
+\file{figures/post_contingency_objective_gaps.png} & Results, next to the
+primary prospective table & Per-seed or distributional raw objective gaps;
+the caption must state the scenario, trial count, and interval definition. \\
+\addlinespace
+\file{generated/hardware_evidence_tables.tex} & End of ``Hardware evidence
+status,'' only after campaign validation & Same-instance expectation, mode,
+best sampled energy, exact optima, hit fraction, uncertainty, circuit
+metadata, and candidate validation. \\
+\addlinespace
+Legacy generated files and \file{results/benchmark.json} & Audit appendix or
+secondary scaling subsection & Historical base-case surrogate-QUBO audit
+only; never labelled post-contingency or current-model evidence. \\
+\bottomrule
+\end{longtable}
+
+After the new macro file exists, the preamble of \file{main_2.tex} should
+contain:
+
+\begin{verbatim}
+\input{koshi_admm_qaoa/generated/paper_numbers.tex}
+\input{koshi_admm_qaoa/generated/post_contingency_numbers.tex}
+\end{verbatim}
+
+After the prospective-status paragraph in the Results section, insert the
+generated results table, the validation table, and a figure environment that
+loads \file{koshi_admm_qaoa/figures/post_contingency_objective_gaps.png}.
+Insert the ADMM table in its own immediately following subsection.  The
+pipeline should own captions containing numerical facts whenever feasible.
+
+\section*{6. Section-by-section manuscript revision}
+
+\subsection*{Title and abstract}
+
+Restore ``post-contingency'' to the title only if the complete prospective
+artifact passes validation and post-contingency results become the paper's
+primary evidence.  The abstract should then state:
+\begin{itemize}
+  \item that the branch-3 Basantapur--Inaruwa circuit-A outage is a
+  predeclared \emph{hypothetical} N$-1$ scenario, not a historical event;
+  \item the full 13-switch decision set and exact branch ordering;
+  \item one or two generated, uncertainty-qualified primary findings;
+  \item the separate rates for raw radiality/connectivity, projection, SOC
+  validation, and nonlinear AC validation;
+  \item that no quantum advantage is observed or claimed.
+\end{itemize}
+Remove all stale legacy loss values and avoid ``AC-true,'' ``ground truth,''
+and unqualified ``success probability.''
+
+\subsection*{Introduction and contribution list}
+
+Replace broad novelty claims with verifiable, bounded language.  The
+contributions should distinguish: source-derived topology; estimated
+operating point; heuristic historical QUBO; exact topology audit; corrected
+continuous model; and auditable prospective protocol.  A result should not be
+listed as a contribution until its artifact exists.
+
+\subsection*{System data and continuous formulation}
+
+Retain the corrected complete equations and add a provenance table that labels
+each network quantity as source-reported, derived, or assumed.  In particular,
+document transformer tap assumptions, branch ratings, conductor assumptions,
+load and generation estimates, the 100-MVA base, voltage bases, objective
+units, all Big-$M$ constants, and solver tolerances.  State that the nonlinear
+check is a fixed-injection power flow, not a nonlinear AC-OPF and not proof of
+global AC optimality.
+
+\subsection*{QUBO, radiality, QAOA, and QRAO}
+
+Complete the Ising/objective-sense correction in Section 3.1 of this plan.
+Keep the historical cycle and anti-islanding expressions labelled as
+heuristic pairwise surrogates and retain the exact flow formulation as the
+hard radial reference.  Report exhaustive false-positive and false-negative
+behavior beside any surrogate result.  Update the QRAO primer only from the
+archived mapping and installed implementation; do not infer why compression
+did or did not occur from density alone.
+
+\subsection*{Benchmark methodology}
+
+Preserve the protocol table and exact switch-order table.  Add the execution
+environment fingerprint: Python and package versions, solver versions,
+operating system, CPU, available memory, and whether times are wall, CPU, or
+QPU-access times.  State the contingency, fixed-open/fixed-closed sets, all
+penalties, $\rho$ schedule, initialization, stopping criteria, shots,
+optimizer settings, seed allocation, and projection rule in one reproducible
+location.
+
+Use the offset-invariant gap $f_Q(z)-f_Q^*$ as the primary QUBO metric.
+Approximation ratios may be supplementary only if their additive-offset
+dependence is explained.  State in advance how ties and degenerate exact
+optima are handled.
+
+\subsection*{Results}
+
+Lead with the prospective post-contingency experiment.  Present raw solver
+quality first, topology feasibility second, projection effects third, and
+continuous validation fourth.  Do not average together failed and successful
+physical validations by assigning arbitrary infinite losses.  Report
+validation denominators explicitly.
+
+Move the retained base-case size sweep to an audit subsection or appendix so
+readers cannot mistake it for the primary post-contingency evidence.  Keep
+method rankings scoped to the measured quantity: QUBO objective, runtime,
+topology feasibility, or validated physical loss are different comparisons.
+
+\subsection*{Hardware section}
+
+If hardware remains excluded, keep only a short evidence-status paragraph and
+move the detailed contract to an appendix or repository documentation.  If
+hardware is included, report expectation, standard error, modal sample,
+best-energy sampled bitstring, all exact optimum bitstrings, exact-optimum hit
+fraction, circuit depth/two-qubit count, backend/calibration metadata, and
+same-size validation.  Make only descriptive statements unless the repeated
+paired campaign supports an uncertainty-qualified comparison.
+
+\subsection*{Discussion and conclusion}
+
+Rewrite both sections after the generated results are final.  Separate what
+the experiment observes from what the formulation guarantees.  Discuss the
+cost and frequency of topology projection, SOC tightness failures, nonlinear
+recovery failures, estimated data, assumed unit transformer taps, small
+problem size, simulator/hardware limits, and sensitivity to penalties.
+
+The conclusion should contain no number absent from a generated macro and no
+causal statement absent from a controlled comparison.  It should not claim
+AC optimality, hard radiality from the heuristic QUBO, post-contingency
+validation from the legacy artifact, or quantum advantage.
+
+\subsection*{Appendices and code/data availability}
+
+Retain the legacy fixed-topology table with a prominent
+continuous-model-v1/stale label.  Add appendices for the complete continuous
+model, variable/branch ordering, exact radiality formulation, residual
+definitions, and evidence schemas if page limits permit; otherwise place them
+in a clearly versioned supplement.
+
+The availability statement must name the authoritative files, the archived
+commit, license, environment specification, and permanent release identifier.
+Archive the exact submission revision with a DOI or equivalent immutable
+record rather than citing a moving default branch alone.
+
+\section*{7. Statistical and reporting acceptance rules}
+
+\begin{itemize}
+  \item Preserve all 30 predeclared, seed-matched trials per stochastic method.
+  Any failure remains in the denominator and is classified by failure mode.
+  \item Report median, interquartile range, and the predeclared paired-seed
+  bootstrap 95\% interval for continuous gaps; retain the bootstrap seed and
+  10,000-resample rule from the protocol.
+  \item Report Wilson 95\% intervals for binary rates, including exact-QUBO
+  hits, connected/radial outputs, projection use, SOC validation, and
+  nonlinear AC validation.
+  \item Do not treat shots as independent optimizer runs or independent QPU
+  calibrations.  State the unit of replication for every uncertainty estimate.
+  \item Treat penalty and $\rho$ sweeps as one-factor-at-a-time sensitivity
+  analyses, not causal ablations.  Report all configured levels, including
+  failed or unfavorable runs.
+  \item Report runtime hardware, software, inclusion boundaries, and whether
+  compilation, transpilation, queueing, and validation time are included.
+  \item Report exact-QUBO objective ties as sets of optima.  Do not compare a
+  modal sample to one arbitrarily selected optimum if the optimum is
+  degenerate.
+\end{itemize}
+
+\section*{8. External verification still required}
+
+These tasks require source checking or external records rather than another
+local code run.
+
+\begin{enumerate}
+  \item \textbf{Network provenance.}  Verify every branch endpoint, circuit,
+  length, voltage class, conductor/impedance assumption, branch rating,
+  transformer parameter, load, and generation value against the cited NEA and
+  grid-company sources.  Publish a source/derived/estimated provenance table.
+  \item \textbf{Operating scenario.}  Explain why the hypothetical branch-3
+  outage is a meaningful stress case.  Report the intact and post-outage base
+  states under the corrected model.  Do not imply that the outage occurred
+  historically unless an operational record establishes that fact.
+  \item \textbf{Novelty.}  Perform a current, systematic literature search for
+  transmission reconfiguration, radiality QUBOs, ADMM--QAOA/QRAO power-system
+  work, and nonlinear validation.  Replace ``none'' and ``nearly all'' claims
+  with bounded statements supported by the search protocol.
+  \item \textbf{Bibliography.}  Verify every provisional metadata field and
+  remove internal notes.  In particular, resolve the note attached to
+  \texttt{morstyn2023annealing} and the author-name note attached to
+  \texttt{bhandari2020inps}; remove duplicate or project-internal bibliography
+  records if they are not cited.
+  \item \textbf{Hardware, if included.}  Verify job IDs against exported job
+  results, backend target/properties snapshots, calibration timestamps,
+  transpiled circuits, primitive options, and raw counts.  Repository strings
+  alone are not evidence of an executed job.
+\end{enumerate}
+
+\section*{9. Final submission checks}
+
+Perform the following only after the scientific artifacts and prose are
+frozen.
+
+\begin{enumerate}
+  \item Run all unit tests, the legacy artifact check, the prospective artifact
+  check, and any hardware campaign check.  Save the check outputs with the
+  release metadata.
+  \item Search the manuscript and supplement for
+  \texttt{TODO}, \texttt{PENDING}, provisional notes, ``AC-true,'' stale
+  legacy losses, old switch counts, old sample-probability language, and
+  unsupported hardware wording.
+  \item Compile \file{main_2.tex} from a clean auxiliary-file state.  Treat
+  undefined citations/references, missing generated inputs, multiply defined
+  labels, and serious overfull boxes as failures.
+  \item Visually inspect every page, especially two-column tables, figure
+  legends, equation breaks, appendix inputs, URLs, and bibliography
+  capitalization.
+  \item Confirm that every figure caption names the experiment and evidence
+  scope accurately.  Do not claim a panel that is absent from the file.
+  \item Add the journal-required declarations: author contributions, funding,
+  conflicts of interest, data/code availability, acknowledgments, and any
+  generative-AI disclosure required by the target journal.
+  \item Create an immutable release containing source, strict raw artifacts,
+  generated products, manifests, environment file, tests, README execution
+  instructions, commit hash, and DOI.  Verify that the paper cites that exact
+  release.
+\end{enumerate}
+
+\section*{10. Submission gate}
+
+The manuscript is ready for submission only when every statement below is
+true.
+
+\begin{itemize}
+  \item[$\square$] The QUBO-to-Ising mapping, objective sense, bit order, and
+  QRAO mapping match executable unit tests and archived metadata.
+  \item[$\square$] Raw and projected outputs are separately archived and
+  reported.
+  \item[$\square$] The prospective primary, sensitivity, and ADMM artifacts
+  pass strict validation against the frozen protocol hash.
+  \item[$\square$] Current-model SOC diagnostics and nonlinear AC recovery are
+  reported with denominators and residuals; no stale loss is presented as a
+  new result.
+  \item[$\square$] Every headline number is generated from the validated
+  prospective artifact and covered by the manifest.
+  \item[$\square$] The manuscript clearly separates heuristic QUBO behavior,
+  exact radiality, topology projection, SOC relaxation, and nonlinear
+  power-flow validation.
+  \item[$\square$] Hardware is either excluded without residual quantitative
+  claims or supported by a validated repeated campaign.
+  \item[$\square$] Data provenance, novelty, and bibliographic metadata have
+  been externally verified.
+  \item[$\square$] A clean compile and visual inspection pass, and the exact
+  submission revision is archived immutably.
+\end{itemize}
+
+Until these gates pass, the scientifically safe manuscript is the current
+audited version: it may describe the corrected methods and the limitations of
+the legacy record, but it should not restore quantitative post-contingency,
+current-model AC, ADMM-convergence, or hardware-performance claims.
+
+\end{document}
